@@ -11,11 +11,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentContainer;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +31,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -77,11 +80,21 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         final String blogPostId = blog_list.get(position).BlogPostId;
+        String blogUserId = blog_list.get(position).getUid();
+
+
+        // blogpost törlés gomb megjelenítése
+        if (TextUtils.equals(currentUserId,blogUserId)){
+            holder.blogDeleteBtn.setEnabled(true);
+            holder.blogDeleteBtn.setVisibility(View.VISIBLE);
+        }
 
         holder.setIsRecyclable(false);
         holder.setDescText(blog_list.get(position).getDesc());
         holder.setTitleView(blog_list.get(position).getTitle());
         holder.setImage(blog_list.get(position).getThumb());
+
+
         holder.setUserData(user_list.get(position).getName(), user_list.get(position).getImage_thumb());
 
         //klikkelhető cardView
@@ -207,6 +220,20 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
             }
         });
 
+        // kattintás a törlés gombon
+        holder.blogDeleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                firebaseFirestore.collection("Posts").document(blogPostId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                            blog_list.remove(position);
+                            user_list.remove(position);
+                    }
+                });
+            }
+        });
+
     }
 
     @Override
@@ -230,6 +257,8 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         private LinearLayout blogCommentLinearlayout;
         private TextView blogCommentCount;
 
+        private Button blogDeleteBtn;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -241,6 +270,8 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
             blogLikeText = (TextView) mView.findViewById(R.id.blog_like_text);
             blogCommentLinearlayout = (LinearLayout) mView.findViewById(R.id.blog_comment_layout);
             image = (ImageView) mView.findViewById(R.id.blog_image);
+
+            blogDeleteBtn = (Button)mView.findViewById(R.id.blog_delete_btn);
 
         }
 
