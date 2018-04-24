@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/halvany_kek"
     tools:context=".SingleImageActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -17,8 +17,9 @@
         android:id="@+id/single_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        app:srcCompat="@mipmap/full_placeholder" />
+        app:srcCompat="@drawable/cat" />
 
     <FrameLayout
         android:id="@+id/framelayout"

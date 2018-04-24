@@ -214,7 +214,6 @@ public class NewPostActivity extends AppCompatActivity {
     }
 
     private void BringImagePicker() {
-
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, REQ_CODE_FOR_GALLERY);
@@ -244,19 +243,4 @@ public class NewPostActivity extends AppCompatActivity {
         }
     }
 
-    //random sztring generátor
-    public static String randomString() {
-        Random generator = new Random();
-        StringBuilder randomStringBuilder = new StringBuilder();
-        int randomLength = generator.nextInt(MAX_LENGTH_FOR_RANDOM_STRING);
-        char tempChar;
-        for (int i = 0; i < randomLength; i++) {
-            do {
-                tempChar = (char) (generator.nextInt(74) + 48);
-            } while (tempChar == '/' || tempChar == '\\');
-
-            randomStringBuilder.append(tempChar);
-        }
-        return randomStringBuilder.toString();
-    }
 }

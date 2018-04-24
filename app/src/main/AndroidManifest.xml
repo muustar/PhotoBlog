@@ -32,16 +32,21 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".NewPostActivity" />
-        <activity android:name=".DeleteProfileActivity" />
-        <activity android:name=".CommentsActivity" />
+        <activity android:name=".NewPostActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DeleteProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".CommentsActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SingleImageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_single_image"
             android:theme="@style/FullscreenTheme" />
-        <activity android:name=".SinglePostItemActivity" />
-        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".SinglePostItemActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SearchActivity"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="preloaded_fonts"

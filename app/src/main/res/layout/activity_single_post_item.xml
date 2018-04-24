@@ -20,13 +20,13 @@
         android:id="@+id/singlepost_image"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:background="@color/halvany_kek"
+        android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/singlepost_progressbar"
-        app:srcCompat="@mipmap/material"
-        />
+        app:srcCompat="@drawable/cat" />
 
     <TextView
         android:id="@+id/singlepost_title"
@@ -56,10 +56,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
+        android:enabled="false"
         android:text="Post törlése"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

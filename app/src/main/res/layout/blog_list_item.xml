@@ -10,8 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:cardBackgroundColor="@color/cardview_light_background"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -56,15 +54,16 @@
 
             <ImageView
                 android:id="@+id/blog_image"
-                android:layout_width="0dp"
-                android:layout_height="130dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:adjustViewBounds="true"
                 android:contentDescription="TODO"
-                android:scaleType="centerCrop"
+                android:scaleType="centerInside"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/blog_userImage"
-                app:srcCompat="@mipmap/material" />
+                app:srcCompat="@drawable/cat" />
 
             <TextView
                 android:id="@+id/blog_desc"
@@ -134,7 +133,6 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/blog_image">
-
 
 
                 <ImageView

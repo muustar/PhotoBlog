@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
                 }
             });
 
-            Query firstQuery = firebaseFirestore.collection("Posts").orderBy("timestamp", Query.Direction.DESCENDING).limit(3);
+            Query firstQuery = firebaseFirestore.collection("Posts").orderBy("timestamp", Query.Direction.DESCENDING).limit(1);
             firstQuery.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
@@ -160,9 +160,9 @@ public class HomeFragment extends Fragment {
             Query nextQuery = firebaseFirestore.collection("Posts")
                     .orderBy("timestamp", Query.Direction.DESCENDING)
                     .startAfter(lastVisible)
-                    .limit(3);
+                    .limit(10);
 
-            nextQuery.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
+            ListenerRegistration registration = nextQuery.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
 
@@ -171,38 +171,39 @@ public class HomeFragment extends Fragment {
                         lastVisible = documentSnapshots.getDocuments().get(documentSnapshots.size() - 1);
                         for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
 
-                            if (doc.getType() == DocumentChange.Type.ADDED) {
+                            // if (doc.getType() == DocumentChange.Type.ADDED) {
 
-                                String blogPostId = doc.getDocument().getId();
-                                final BlogPost blogPost = doc.getDocument().toObject(BlogPost.class).withId(blogPostId);
-
-
-                                String blogUserId = doc.getDocument().getString("uid");
-
-                                firebaseFirestore.collection("Users").document(blogUserId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if (task.isSuccessful()) {
-
-                                            Users user = task.getResult().toObject(Users.class);
+                            String blogPostId = doc.getDocument().getId();
+                            final BlogPost blogPost = doc.getDocument().toObject(BlogPost.class).withId(blogPostId);
 
 
-                                            user_list.add(user);
-                                            blog_list.add(blogPost);
+                            String blogUserId = doc.getDocument().getString("uid");
+
+                            firebaseFirestore.collection("Users").document(blogUserId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+
+                                        Users user = task.getResult().toObject(Users.class);
 
 
-                                            blogRecyclerAdapter.notifyDataSetChanged();
+                                        user_list.add(user);
+                                        blog_list.add(blogPost);
 
-                                        }
+
+                                        blogRecyclerAdapter.notifyDataSetChanged();
+
                                     }
-                                });
-                            }
+                                }
+                            });
+                            // }
 
                         }
                     }
 
                 }
             });
+
 
         }
 
