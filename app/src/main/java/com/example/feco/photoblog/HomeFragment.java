@@ -78,102 +78,35 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-                    Boolean reachedBottom = !recyclerView.canScrollVertically(1); //direction 1, akkor az alját értük el  ha -1 akkor a tetejét
-                    Boolean reachedTop = !recyclerView.canScrollVertically(-1);
-                    if (reachedBottom && !isFirstPageFirstLoad) {
-                        //loadMorePost();
-                    }
-                }
-            });
 
-            Query all = firebaseFirestore.collection("Posts")
-                    .orderBy("timestamp", Query.Direction.DESCENDING);
+                    Boolean reachedBottom = !recyclerView.canScrollVertically(1);
 
-            all.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot documentSnapshots,
-                                    @Nullable FirebaseFirestoreException e) {
-                    if (e != null) {
-                        Log.d("FECO", "Hiba: " + e);
-                        return;
-                    }
+                    if (reachedBottom) {
 
-                    for (DocumentSnapshot doc : documentSnapshots) {
-                        String blogPostId = doc.getId();
-                        BlogPost blogPost = doc.toObject(BlogPost.class).withId(blogPostId);
-                        blog_list.add(blogPost);
-                        Log.d("FECO", "blogUserId " + blogPost.getTitle());
-
-                        String blogUserId = doc.getString("uid");
-
-                        DocumentReference userRef = firebaseFirestore.collection("Users").document(blogUserId);
-                        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot doc = task.getResult();
-                                    Users user = doc.toObject(Users.class);
-                                    user_list.add(user);
-                                    blogRecyclerAdapter.notifyDataSetChanged();
-                                }
-                            }
-                        });
+                        loadMorePost();
 
                     }
-
 
                 }
             });
 
-            /*
-            // ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ
-
-            Query first = firebaseFirestore.collection("Posts")
-                    .orderBy("timestamp")
-                    .limit(2);
-
-            first.get()
-                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot documentSnapshots) {
-
-                            DocumentSnapshot lastVisile = documentSnapshots.getDocuments()
-                                    .get(documentSnapshots.size() - 1);
-
-                            for ()
-
-
-                            Query next = firebaseFirestore.collection("Posts")
-                                    .orderBy("timestamp")
-                                    .startAfter(lastVisile)
-                                    .limit(2);
-                        }
-                    });
-
-            // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            */
-
-
-            /*
-            Query firstQuery = firebaseFirestore.collection("Posts")
-                    .orderBy("timestamp", Query.Direction.DESCENDING)
-                    .limit(LIMIT);
-
-
-            firstQuery.addSnapshotListener(new EventListener<QuerySnapshot>() { //getActivity()
+            Query firstQuery = firebaseFirestore.collection("Posts").orderBy("timestamp", Query.Direction.DESCENDING).limit(3);
+            firstQuery.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                    if (e == null) {
+
+                    if (!documentSnapshots.isEmpty()) {
+
                         if (isFirstPageFirstLoad) {
 
+                            lastVisible = documentSnapshots.getDocuments().get(documentSnapshots.size() - 1);
+                            blog_list.clear();
+                            user_list.clear();
 
-                            lastVisible = documentSnapshots.getDocuments()
-                                    .get(documentSnapshots.size() - 1);
-                            isFirstPageFirstLoad = false;
                         }
 
-
                         for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+
                             if (doc.getType() == DocumentChange.Type.ADDED) {
 
                                 String blogPostId = doc.getDocument().getId();
@@ -185,19 +118,17 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                         if (task.isSuccessful()) {
+
                                             Users user = task.getResult().toObject(Users.class);
 
 
                                             if (isFirstPageFirstLoad) {
-
-                                                blog_list.add(blogPost);
                                                 user_list.add(user);
+                                                blog_list.add(blogPost);
 
                                             } else {
-
-                                                blog_list.add(0, blogPost);
                                                 user_list.add(0, user);
-
+                                                blog_list.add(0, blogPost);
                                             }
                                             blogRecyclerAdapter.notifyDataSetChanged();
 
@@ -205,50 +136,41 @@ public class HomeFragment extends Fragment {
                                     }
                                 });
 
-
                             }
-
-                            if (doc.getType() == DocumentChange.Type.REMOVED) {
-                                String blogPostId = doc.getDocument().getId();
-                                BlogPost blogPost = doc.getDocument().toObject(BlogPost.class).withId(blogPostId);
-
-                                //blog_list.remove(blogPost);
-                                //blogRecyclerAdapter.notifyDataSetChanged();
-                                Toast.makeText(getContext(), "törölve lett egy post", Toast.LENGTH_SHORT).show();
-                            }
-
                         }
 
+                        isFirstPageFirstLoad = false;
 
-                    } else {
-                        Toast.makeText(getContext(), "hiba: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
+
                 }
+
             });
-            */
 
         }
 
+        // Inflate the layout for this fragment
         return view;
     }
 
-
     public void loadMorePost() {
-        Toast.makeText(getContext(), "mégtöbb", Toast.LENGTH_SHORT).show();
-        Query nextQuery = firebaseFirestore.collection("Posts")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .startAfter(lastVisible)
-                .limit(LIMIT);
 
-        nextQuery.addSnapshotListener(new EventListener<QuerySnapshot>() {  // a kijeletkezéskor történő crasht, megoldotta a "getActivity()"
-            @Override
-            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                if (e == null) {
+        if (mAuth.getCurrentUser() != null) {
+
+            Query nextQuery = firebaseFirestore.collection("Posts")
+                    .orderBy("timestamp", Query.Direction.DESCENDING)
+                    .startAfter(lastVisible)
+                    .limit(3);
+
+            nextQuery.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+
                     if (!documentSnapshots.isEmpty()) {
 
-                        lastVisible = documentSnapshots.getDocuments()
-                                .get(documentSnapshots.size() - 1);
+                        lastVisible = documentSnapshots.getDocuments().get(documentSnapshots.size() - 1);
                         for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+
                             if (doc.getType() == DocumentChange.Type.ADDED) {
 
                                 String blogPostId = doc.getDocument().getId();
@@ -261,27 +183,28 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                         if (task.isSuccessful()) {
+
                                             Users user = task.getResult().toObject(Users.class);
 
-                                            blog_list.add(blogPost);
+
                                             user_list.add(user);
+                                            blog_list.add(blogPost);
+
 
                                             blogRecyclerAdapter.notifyDataSetChanged();
 
                                         }
                                     }
                                 });
-
                             }
 
                         }
-
                     }
-                } else {
-                    Toast.makeText(getContext(), "hiba: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
                 }
-            }
-        });
+            });
+
+        }
 
     }
 

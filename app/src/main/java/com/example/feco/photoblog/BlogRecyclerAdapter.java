@@ -81,7 +81,6 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         holder.setIsRecyclable(false);
         holder.setDescText(blog_list.get(position).getDesc());
         holder.setTitleView(blog_list.get(position).getTitle());
-        //holder.setTitleView(blogPostId);
         holder.setImage(blog_list.get(position).getThumb());
         holder.setUserData(user_list.get(position).getName(), user_list.get(position).getImage_thumb());
 
