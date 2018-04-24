@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Photo Blog</string>
+    <string name="logofor_login">logofor login</string>
+    <string name="email">email cím</string>
+    <string name="newuser_user_db">newuser@user.db</string>
+    <string name="password">jelszó</string>
+    <string name="mandarin">mandarin</string>
+    <string name="button">Button</string>
+    <string name="login_to_account">Belépés a fiókba</string>
+    <string name="need_a_new_account">Új profil regisztrálása</string>
+    <string name="search_text">Keresés</string>
+    <string name="account_settings_text">Fiók beállításai</string>
+    <string name="logout_text">Kilépés</string>
+    <string name="reg_btn_text">Regisztálás</string>
+    <string name="reg_already_reg_text">Már regisztráltam</string>
+    <string name="beallitas_txt">Profil beállítások mentése</string>
+    <string name="profil_neve_txt">Profil neve</string>
+    <string name="regisztracio_torlese_txt">Regisztráció törlése</string>
+    <string name="torles_tajekoztato_txt">A Felhasználói fiókod törlését kérted. A fiók törlését meg kell erősítened a bejelentkezési adataiddal, kérlek add meg mégegyszer és utoljára az e-mail címedet és jelszavad.</string>
+    <string name="feco_photoblog_hu">feco@photoblog.hu</string>
+    <string name="felhaszn_l_i_profil_t_rl_se">Felhasználói profil törlése</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_activity_single_image">SingleImageActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>

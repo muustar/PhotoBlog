@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/searchlist_profilimg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@mipmap/default_image" />
+
+    <TextView
+        android:id="@+id/searchlist_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/nunito_bold"
+        android:text="Kerek Bogyóka"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/searchlist_profilimg"
+        app:layout_constraintTop_toTopOf="@+id/searchlist_profilimg" />
+
+    <TextView
+        android:id="@+id/searchlist_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/nunito_extralight"
+        android:text="Hi, i am bogyóka, i was born to be a hero, i like to use the Firebase apps"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/searchlist_profilimg"
+        app:layout_constraintTop_toBottomOf="@+id/searchlist_username" />
+</android.support.constraint.ConstraintLayout>
