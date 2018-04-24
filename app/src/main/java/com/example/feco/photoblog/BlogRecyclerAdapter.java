@@ -97,16 +97,7 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
 
         holder.setUserData(user_list.get(position).getName(), user_list.get(position).getImage_thumb());
 
-        //klikkelhető cardView
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent goToSinglePostItemAct = new Intent(context, SinglePostItemActivity.class);
-                goToSinglePostItemAct.putExtra("blogPostId", blogPostId);
-                context.startActivity(goToSinglePostItemAct);
-            }
-        });
 
         //Get Comments count
         firebaseFirestore.collection("Posts/" + blogPostId + "/Comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -170,7 +161,7 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
 
 
         //Like feature
-        holder.blogLikeBtn.setOnClickListener(new View.OnClickListener() {
+        holder.blogLikesLinearlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
 
@@ -214,9 +205,9 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent singleImageI = new Intent(context, SingleImageActivity.class);
-                singleImageI.putExtra("img_uri", blog_list.get(position).getImage());
-                context.startActivity(singleImageI);
+                Intent goToSinglePostItemAct = new Intent(context, SinglePostItemActivity.class);
+                goToSinglePostItemAct.putExtra("blogPostId", blogPostId);
+                context.startActivity(goToSinglePostItemAct);
             }
         });
 
@@ -255,6 +246,7 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         private ImageView blogLikeBtn;
         private TextView blogLikeText;
         private LinearLayout blogCommentLinearlayout;
+        private LinearLayout blogLikesLinearlayout;
         private TextView blogCommentCount;
 
         private Button blogDeleteBtn;
@@ -269,6 +261,7 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
             blogLikeBtn = (ImageView) mView.findViewById(R.id.blog_like);
             blogLikeText = (TextView) mView.findViewById(R.id.blog_like_text);
             blogCommentLinearlayout = (LinearLayout) mView.findViewById(R.id.blog_comment_layout);
+            blogLikesLinearlayout = (LinearLayout)mView.findViewById(R.id.blog_likes_layout);
             image = (ImageView) mView.findViewById(R.id.blog_image);
 
             blogDeleteBtn = (Button)mView.findViewById(R.id.blog_delete_btn);

@@ -1,6 +1,9 @@
 package com.example.feco.photoblog;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -251,6 +254,19 @@ public class SetupActivity extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 isChanged = false;
+
+                                                // notification
+
+                                                NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                                                Notification notify=new Notification.Builder
+                                                        (getApplicationContext()).setContentTitle("Teszt").setContentText("Setup befejeződött").
+                                                        setContentTitle("subject").setSmallIcon(R.drawable.cat).build();
+
+                                                notify.flags |= Notification.FLAG_AUTO_CANCEL;
+                                                notif.notify(0, notify);
+
+
+
                                                 goToMain();
                                             } else {
                                                 Toast.makeText(SetupActivity.this, "Hiba: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
