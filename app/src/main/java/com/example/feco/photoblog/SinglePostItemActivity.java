@@ -119,6 +119,10 @@ public class SinglePostItemActivity extends AppCompatActivity {
                                 Comments commentItem = doc.getDocument().toObject(Comments.class);
                                 comment_list.add(commentItem);
                                 commentsRecyclerAdapter.notifyDataSetChanged();
+
+                                // az utolsó bejegyzésre ugrás
+                                commentsRecyclerAdapter.setSelectedItem(commentsRecyclerAdapter.getItemCount() - 1);
+                                mCommentsRecycler.scrollToPosition(commentsRecyclerAdapter.getItemCount() - 1);
                             }
                         }
 

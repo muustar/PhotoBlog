@@ -22,6 +22,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -73,7 +74,9 @@ public class CommentsActivity extends AppCompatActivity {
         comment_listView.setLayoutManager(new LinearLayoutManager(this));
         comment_listView.setAdapter(commentsRecyclerAdapter);
 
-        firebaseFirestore.collection("Posts/" + blog_post_id + "/Comments").addSnapshotListener(new EventListener<QuerySnapshot>() { //addSnapshotListener(CommentsActivity.this, new EventListener<QuerySnapshot>()
+        Query query = firebaseFirestore.collection("Posts/" + blog_post_id + "/Comments")
+                .orderBy("timestamp", Query.Direction.ASCENDING);
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() { //addSnapshotListener(CommentsActivity.this, new EventListener<QuerySnapshot>()
             @Override
             public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) { //
                 if (e == null) {
@@ -84,6 +87,10 @@ public class CommentsActivity extends AppCompatActivity {
                                 Comments commentItem = doc.getDocument().toObject(Comments.class);
                                 comment_list.add(commentItem);
                                 commentsRecyclerAdapter.notifyDataSetChanged();
+
+                                // az utolsó bejegyzésre ugrás
+                                commentsRecyclerAdapter.setSelectedItem(commentsRecyclerAdapter.getItemCount() - 1);
+                                comment_listView.scrollToPosition(commentsRecyclerAdapter.getItemCount() - 1);
                             }
                         }
 

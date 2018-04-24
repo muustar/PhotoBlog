@@ -27,6 +27,8 @@ public class CommentsRecyclerAdapter extends RecyclerView.Adapter<CommentsRecycl
     private Context context;
     private List<Comments> comment_list;
     private FirebaseFirestore firebaseFirestore;
+    private int selectedItem = -1;
+
 
     public CommentsRecyclerAdapter(List<Comments> comment_list) {
         this.comment_list = comment_list;
@@ -50,14 +52,15 @@ public class CommentsRecyclerAdapter extends RecyclerView.Adapter<CommentsRecycl
         firebaseFirestore.collection("Users").document(comment_list.get(position).getUser_id()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                try{
-                if (task.isSuccessful()) {
-                    String username = task.getResult().getString("name");
-                    String img_thumb_url = task.getResult().getString("image_thumb");
-                    holder.setCommentUsername(username);
-                    holder.setCommentPic(img_thumb_url);
+                try {
+                    if (task.isSuccessful()) {
+                        String username = task.getResult().getString("name");
+                        String img_thumb_url = task.getResult().getString("image_thumb");
+                        holder.setCommentUsername(username);
+                        holder.setCommentPic(img_thumb_url);
 
-                }}catch (Exception e){
+                    }
+                } catch (Exception e) {
                     holder.setCommentUsername("törölt");
                 }
             }
@@ -78,6 +81,17 @@ public class CommentsRecyclerAdapter extends RecyclerView.Adapter<CommentsRecycl
         //animáció
         Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
         holder.mView.startAnimation(animation);
+
+
+        // az utolsó bejegyzésre ugrás
+        if(selectedItem == position)
+            holder.mView.setSelected(true);
+
+    }
+
+    public void setSelectedItem ( int position)
+    {
+        selectedItem = position;
     }
 
     @Override
@@ -87,6 +101,8 @@ public class CommentsRecyclerAdapter extends RecyclerView.Adapter<CommentsRecycl
         } else {
             return 0;
         }
+
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -95,7 +111,6 @@ public class CommentsRecyclerAdapter extends RecyclerView.Adapter<CommentsRecycl
         private TextView commentUsername;
         private TextView commentComment;
         private TextView commentdate;
-
 
         public ViewHolder(View itemView) {
             super(itemView);
