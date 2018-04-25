@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private HomeFragment homeFragment;
     private NotificationFragment notificationFragment;
     private AccountFragment accountFragment;
+    private TodoFragment todoFragment;
+    private ChangesFragment changesFragment;
 
     private static FragmentTransaction fragmentTransaction;
 
@@ -76,12 +78,15 @@ public class MainActivity extends AppCompatActivity {
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             mainBottomNav = (BottomNavigationView) findViewById(R.id.mainBottomNav);
+
             //fragmentek
 
 
             homeFragment = new HomeFragment();
             notificationFragment = new NotificationFragment();
             accountFragment = new AccountFragment();
+            todoFragment = new TodoFragment();
+            changesFragment = new ChangesFragment();
             replaceFregmant(homeFragment);
 
             mainBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -98,6 +103,12 @@ public class MainActivity extends AppCompatActivity {
                             return true;
                         case R.id.bottom_action_account:
                             replaceFregmant(accountFragment);
+                            return true;
+                        case R.id.bottom_action_todo:
+                            replaceFregmant(todoFragment);
+                            return true;
+                        case R.id.bottom_action_changes:
+                            replaceFregmant(changesFragment);
                             return true;
                     }
 
