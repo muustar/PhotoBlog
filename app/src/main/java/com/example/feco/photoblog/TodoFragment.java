@@ -114,6 +114,8 @@ public class TodoFragment extends Fragment {
                     todoMap.put("leiras", be);
 
                     firebaseFirestore.collection("Todo").add(todoMap);
+                    bevitelText.setText("");
+                    bevitelText.setHint("írj újat");
 
                 }
             }
@@ -186,6 +188,12 @@ public class TodoFragment extends Fragment {
             TextView todoSzoveg = (TextView) mView.findViewById(R.id.todo_list_text);
 
             keszGomb.setChecked(todo_list.get(position).getKesz());
+            if (todo_list.get(position).getKesz()){
+                // hamis: várat magára
+                keszGomb.setText("Kész");
+            }else{
+                keszGomb.setText("Vár");
+            }
             todoSzoveg.setText(todo_list.get(position).getLeiras());
             final String docId = todo_list.get(position).getDocId();
 
@@ -195,6 +203,13 @@ public class TodoFragment extends Fragment {
                     Map<String, Object> todoMap = new HashMap<>();
                     todoMap.put("kesz", keszGomb.isChecked());
                     todoMap.put("leiras", todo_list.get(position).getLeiras());
+
+                    if (keszGomb.isChecked()){
+                        // hamis: várat magára
+                        keszGomb.setText("Kész");
+                    }else{
+                        keszGomb.setText("Vár");
+                    }
 
                     firebaseFirestore.collection("Todo").document(docId).set(todoMap);
                 }
