@@ -42,6 +42,7 @@
         android:singleLine="true"
         android:text="happy"
         android:textColor="@color/colorAccent"
+        android:background="@drawable/bevitel_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/comments_post_btn"
         app:layout_constraintStart_toStartOf="parent" />

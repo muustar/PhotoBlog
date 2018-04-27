@@ -32,6 +32,7 @@
         android:inputType="textEmailAddress"
         android:shadowColor="@android:color/white"
         android:text="feco@photoblog.hu"
+        android:background="@drawable/bevitel_layout"
         android:textColor="@android:color/white"
         android:textColorHighlight="@android:color/white"
         android:textColorHint="@color/white_transparentHalf"
@@ -53,6 +54,7 @@
         android:textColorHighlight="@android:color/white"
         android:textColorHint="@color/white_transparentHalf"
         android:textColorLink="@android:color/white"
+        android:background="@drawable/bevitel_layout"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:text="@string/mandarin"
@@ -69,9 +71,9 @@
         android:layout_marginTop="8dp"
         android:text="@string/login_to_account"
         android:textAllCaps="false"
-        android:background="@color/colorAccent"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/piros_gomb_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reg_passwd_again" />
 
@@ -85,7 +87,7 @@
 
         android:text="@string/need_a_new_account"
         android:textAllCaps="false"
-        android:background="@android:color/white"
+        android:background="@drawable/feher_gomb_layour"
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

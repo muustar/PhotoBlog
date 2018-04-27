@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity  {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseFirestore = FirebaseFirestore.getInstance();
         dot_load = (LoadingDots) findViewById(R.id.dot_load);
-        myToast(this, mAuth.getCurrentUser().getEmail());
+
         // felületi elemek inicializálása
         mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
@@ -141,7 +141,8 @@ public class MainActivity extends AppCompatActivity  {
                         if (!task.getResult().exists()) {
                             goToSetup();
                         } else {
-
+                            //siekres belépés
+                            myToast(MainActivity.this, mAuth.getCurrentUser().getEmail());
                         }
                     } else {
                         Toast.makeText(MainActivity.this, "Hiba: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
