@@ -20,13 +20,17 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -161,7 +165,8 @@ public class SetupActivity extends AppCompatActivity {
                     //mPrbarCircle.setVisibility(View.INVISIBLE);
                     //mImgBlue.setVisibility(View.INVISIBLE);
                     mCatView.dismiss();
-                    Toast.makeText(SetupActivity.this, "Hiba: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    myToast(SetupActivity.this,"Hiba: " + task.getException().getMessage() );
+                    //Toast.makeText(SetupActivity.this, "Hiba: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -173,7 +178,8 @@ public class SetupActivity extends AppCompatActivity {
                 // kép kiválasztásához az engedélyeket kezeljük
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (ContextCompat.checkSelfPermission(SetupActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(SetupActivity.this, "Nincs enegdély", Toast.LENGTH_SHORT).show();
+                        myToast(SetupActivity.this, "Nincs enegdély");
+                       // Toast.makeText(SetupActivity.this, "Nincs enegdély", Toast.LENGTH_SHORT).show();
                         ActivityCompat.requestPermissions(SetupActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
 
                     } else {
@@ -389,6 +395,17 @@ public class SetupActivity extends AppCompatActivity {
         startActivity(goToDelete);
         finish();
     }
-
+    public void myToast(Context ctx, String showText) {
+        //custom toast
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.custom_toast_container));
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(showText);
+        Toast toast = new Toast(ctx);
+        toast.setGravity(Gravity.BOTTOM, 0, 100);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+    }
 
 }

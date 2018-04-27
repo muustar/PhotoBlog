@@ -1,6 +1,7 @@
 package com.example.feco.photoblog;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,11 +15,15 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -93,7 +98,8 @@ public class NewPostActivity extends AppCompatActivity {
                 // kép kiválasztásához az engedélyeket kezeljük
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (ContextCompat.checkSelfPermission(NewPostActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(NewPostActivity.this, "Nincs enegdély", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(NewPostActivity.this, "Nincs enegdély", Toast.LENGTH_SHORT).show();
+                        myToast(NewPostActivity.this,"Nincs engedély");
                         ActivityCompat.requestPermissions(NewPostActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
 
                     } else {
@@ -243,4 +249,16 @@ public class NewPostActivity extends AppCompatActivity {
         }
     }
 
+    public void myToast(Context ctx, String showText) {
+        //custom toast
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.custom_toast_container));
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(showText);
+        Toast toast = new Toast(ctx);
+        toast.setGravity(Gravity.BOTTOM, 0, 100);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+    }
 }

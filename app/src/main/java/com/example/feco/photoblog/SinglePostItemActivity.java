@@ -1,6 +1,7 @@
 package com.example.feco.photoblog;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -140,7 +144,8 @@ public class SinglePostItemActivity extends AppCompatActivity {
 
                 String fajlNev = thumbPath.substring(index, indexJpg);
 
-                Toast.makeText(getApplicationContext(),"i: "+index+"\n"+fajlNev, Toast.LENGTH_SHORT).show();
+                myToast(getApplicationContext(),"i: "+index+"\n"+fajlNev);
+                //Toast.makeText(getApplicationContext(),"i: "+index+"\n"+fajlNev, Toast.LENGTH_SHORT).show();
 
                 StorageReference th = FirebaseStorage.getInstance().getReference().child("Post_images").child("thumbs").child(fajlNev);
                 th.delete();
@@ -169,5 +174,18 @@ public class SinglePostItemActivity extends AppCompatActivity {
                 startActivity(singleImageI);
             }
         });
+    }
+
+    public void myToast(Context ctx, String showText) {
+        //custom toast
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.custom_toast_container));
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(showText);
+        Toast toast = new Toast(ctx);
+        toast.setGravity(Gravity.BOTTOM, 0, 100);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
     }
 }
