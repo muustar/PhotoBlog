@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity  {
     private void goToSetup() {
         Intent goToSetup = new Intent(MainActivity.this, SetupActivity.class);
         startActivity(goToSetup);
-        finish();
+
     }
 
     @Override

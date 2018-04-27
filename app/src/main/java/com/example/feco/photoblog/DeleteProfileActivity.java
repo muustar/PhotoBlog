@@ -1,15 +1,21 @@
 package com.example.feco.photoblog;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -57,19 +63,27 @@ public class DeleteProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = mDeleteEmail.getText().toString().trim();
                 String passwd = mDeletePasswd.getText().toString().trim();
-                AuthCredential credential = EmailAuthProvider
-                        .getCredential(email, passwd);
+                if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(passwd)){
+                    if (TextUtils.equals(email, mAuth.getCurrentUser().getEmail())){
+                        AuthCredential credential = EmailAuthProvider
+                                .getCredential(email, passwd);
 
-                // Prompt the user to re-provide their sign-in credentials
-                mAuth.getCurrentUser().reauthenticate(credential)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    felhasznaloiProfilTorlese();
-                                }
-                            }
-                        });
+                        // Prompt the user to re-provide their sign-in credentials
+                        mAuth.getCurrentUser().reauthenticate(credential)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            felhasznaloiProfilTorlese();
+                                        }
+                                    }
+                                });
+                    }else{
+                        myToast(DeleteProfileActivity.this, "Nem ezzel az email címmel vagy bejelentkezve");
+                    }
+                }
+
+
             }
         });
 
@@ -110,5 +124,17 @@ public class DeleteProfileActivity extends AppCompatActivity {
         Intent goToLogin = new Intent(DeleteProfileActivity.this, LoginActivity.class);
         startActivity(goToLogin);
         finish();
+    }
+    public void myToast(Context ctx, String showText) {
+        //custom toast
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.custom_toast_container));
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(showText);
+        Toast toast = new Toast(ctx);
+        toast.setGravity(Gravity.BOTTOM, 0, 100);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
     }
 }

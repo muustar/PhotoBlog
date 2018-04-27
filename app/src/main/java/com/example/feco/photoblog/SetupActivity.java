@@ -393,7 +393,6 @@ public class SetupActivity extends AppCompatActivity {
     private void goToDeleteProfile() {
         Intent goToDelete = new Intent(SetupActivity.this, DeleteProfileActivity.class);
         startActivity(goToDelete);
-        finish();
     }
     public void myToast(Context ctx, String showText) {
         //custom toast

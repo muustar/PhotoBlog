@@ -1,11 +1,13 @@
 package com.example.feco.photoblog;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -95,6 +98,7 @@ public class TodoFragment extends Fragment {
                             todo_list.add(todo);
                             todoAdapter.notifyDataSetChanged();
                         }
+
                     }
                 }
 
@@ -121,8 +125,11 @@ public class TodoFragment extends Fragment {
             }
         });
 
+
+
         return view;
     }
+
 
     class TodoElement {
         private Boolean kesz;
@@ -186,6 +193,7 @@ public class TodoFragment extends Fragment {
 
             final Switch keszGomb = (Switch) mView.findViewById(R.id.todo_list_switch);
             TextView todoSzoveg = (TextView) mView.findViewById(R.id.todo_list_text);
+            ImageView delBtn = (ImageView)mView.findViewById(R.id.todo_list_del);
 
             keszGomb.setChecked(todo_list.get(position).getKesz());
             if (todo_list.get(position).getKesz()){
@@ -196,6 +204,18 @@ public class TodoFragment extends Fragment {
             }
             todoSzoveg.setText(todo_list.get(position).getLeiras());
             final String docId = todo_list.get(position).getDocId();
+
+            if (TextUtils.equals(mAuth.getCurrentUser().getEmail(),"emulator@photoblog.hu")){
+                delBtn.setVisibility(View.VISIBLE);
+            }
+
+            delBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    firebaseFirestore.collection("Todo").document(docId).delete();
+                }
+            });
+
 
             keszGomb.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -218,4 +238,5 @@ public class TodoFragment extends Fragment {
             return mView;
         }
     }
+
 }
